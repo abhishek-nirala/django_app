@@ -1,0 +1,60 @@
+{% extends "base.html" %} {% block title %} Contact {% endblock title %} 
+{%block body %}
+
+<!-- successful message display using messages framework -->
+
+<div class="container my-3">
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img
+        class="mx-5"
+        src="https://media.istockphoto.com/photos/hand-pressing-a-contact-us-button-picture-id487923098?k=6&m=487923098&s=612x612&w=0&h=fzAGlVKaTlnYJuZpRCD9ScQcyOzonwtwvOGMmvZBO1U="
+        class="d-block w-10"
+        width="900"
+        height="540"
+        alt="..."
+      />
+    </div>
+  </div>
+</div>
+
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <h2 class="text-center">Get in Touch</h2>
+      <form method="post" action="/contact">
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="name">Name:</label>
+          <input
+            type="text"
+            class="form-control"
+            name="name"
+            placeholder="Enter your name"
+          />
+        </div>
+        <div class="form-group">
+          <label for="email">Email:</label>
+          <input
+            type="email"
+            class="form-control"
+            name="email"
+            placeholder="Enter your email"
+          />
+        </div>
+        <div class="form-group">
+          <label for="desc">Message:</label>
+          <textarea
+            class="form-control"
+            name="desc"
+            rows="5"
+            placeholder="Enter your message"
+          ></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Submit</button>
+      </form>
+    </div>
+  </div>
+
+</div>
+{% endblock body %}
