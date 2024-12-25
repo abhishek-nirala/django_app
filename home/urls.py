@@ -10,6 +10,6 @@ urlpatterns = [
    # path('success',views.success,name='success'),
    path('signup',views.signup,name='signup'),
    path('login',views.login,name='login'),
-   path('change-password',views.change_password,name='change_password'),
+   path('change_password/',views.change_password,name='change_password'),
    # path('get-image-url/', views.get_image_url, name='get_image_url'),
 ]

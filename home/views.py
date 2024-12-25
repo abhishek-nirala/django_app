@@ -118,11 +118,11 @@ def change_password(req):
         
         if (new_password != confirm_password):
             messages.error(req, "new password and confirm password didn't match")
-            return redirect('/change-password')
+            return redirect('change_password')
         
         if current_password == new_password:
-            messages.error(req, 'the previous password and the new password cannot be the same')
-            return redirect('/change-password')
+            messages.error(req, 'the current password and the new password cannot be the same')
+            return redirect('change_password')
 
         
         user=req.user #returns the logged in user.
@@ -131,13 +131,13 @@ def change_password(req):
         #matching the current password and entered current_password
         if not user.check_password(current_password):
             messages.error(req, 'current password did not matched')
-            return redirect('/change-password')
+            return redirect('change_password')
         
         user.set_password(new_password)
         user.save()
         update_session_auth_hash(req,user)  # Prevent session logout
         messages.success(req, "Password changed successfully!")
-        redirect(req,'/')
+        return redirect('/')
             
     return render(req, 'change_password.html')
   
