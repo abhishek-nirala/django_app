@@ -2,11 +2,11 @@ from django.shortcuts import render, redirect
 from home.models import Contact
 from datetime import datetime
 from django.contrib import messages
-# from django.contrib.auth.models import User
 from django.contrib.auth.models import User
 from django.http import JsonResponse
-from django.contrib.auth import login as auth_login, authenticate
-
+from django.contrib.auth import login as auth_login, authenticate, update_session_auth_hash
+from django.contrib.auth.decorators import login_required
+# from django.contrib.auth.models import User
 
 # Create your views here.
 
@@ -83,8 +83,8 @@ def login(req):
         username = req.POST.get('username')
         password = req.POST.get('password')
         
-        print(f"Username from form: '{username}'and password : {password}")
-        print('req.post : ',req.POST)
+        # print(f"Username from form: '{username}'and password : {password}")
+        # print('req.post : ',req.POST)
 
 
         if not User.objects.filter(username=username).exists():
@@ -106,20 +106,38 @@ def login(req):
 def success(req):
     return render(req, 'success.html')
 
+
+@login_required
 def change_password(req):
     if req.method =='POST':
         current_password = req.POST.get('current-password')
         new_password = req.POST.get('new-password')
         confirm_password = req.POST.get('confirm-password')
         
+        print('current_password : ',current_password)
+        
         if (new_password != confirm_password):
             messages.error(req, "new password and confirm password didn't match")
+            return redirect('/change-password')
+        
+        if current_password == new_password:
+            messages.error(req, 'the previous password and the new password cannot be the same')
+            return redirect('/change-password')
 
+        
         user=req.user #returns the logged in user.
         print('user : ',user)
+        
         #matching the current password and entered current_password
-        if not user.check_password(new_password):
+        if not user.check_password(current_password):
             messages.error(req, 'current password did not matched')
+            return redirect('/change-password')
+        
+        user.set_password(new_password)
+        user.save()
+        update_session_auth_hash(req,user)  # Prevent session logout
+        messages.success(req, "Password changed successfully!")
+        redirect(req,'/')
             
     return render(req, 'change_password.html')
   

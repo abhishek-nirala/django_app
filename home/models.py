@@ -18,7 +18,6 @@ class Contact(models.Model):
 #     username = models.CharField(max_length=20, validators=[special_char_validator])
 #     email  = models.EmailField(max_length=254)
 
-print(User.objects.filter(username='abhiNirala').exists(),"check the username")
 
 def __str__(self):
     return self.name 
